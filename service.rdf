@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:ex="http://example.org/">
+
+  <!-- Nodes -->
+  <rdf:Description rdf:about="http://example.org/node/A">
+    <rdf:type rdf:resource="http://example.org/NodeType"/>
+    <ex:label>A</ex:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://example.org/node/B">
+    <rdf:type rdf:resource="http://example.org/NodeType"/>
+    <ex:label>B</ex:label>
+  </rdf:Description>
+
+  <!-- Edges -->
+  <rdf:Description rdf:about="http://example.org/edge/A-B">
+    <rdf:type rdf:resource="http://example.org/EdgeType"/>
+    <ex:source rdf:resource="http://example.org/node/A"/>
+    <ex:target rdf:resource="http://example.org/node/B"/>
+    <ex:weight>0.5</ex:weight>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://example.org/edge/B-A">
+    <rdf:type rdf:resource="http://example.org/EdgeType"/>
+    <ex:source rdf:resource="http://example.org/node/B"/>
+    <ex:target rdf:resource="http://example.org/node/A"/>
+    <ex:weight>0.7</ex:weight>
+  </rdf:Description>
+
+</rdf:RDF>

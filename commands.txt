@@ -1,0 +1,1 @@
+curl -X POST -F "rdf_file=@path/to/your/file.rdf" http://localhost:5000/process_rdf
