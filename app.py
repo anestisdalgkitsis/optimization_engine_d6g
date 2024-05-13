@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 @app.route('/management', methods=['POST'])
 def management():
-    pass
+    print("ok")
+    return jsonify("ok")
 
 # IBN (RDF) Endpoint
 
