@@ -14,14 +14,14 @@ def management():
 
 @app.route('/service_request', methods=['POST'])
 def process_rdf():
-    if 'rdf_file' not in request.files:
+    if 'request' not in request.files:
         return jsonify({'error': 'No RDF service request provided'})
 
-    rdf_file = request.files['rdf_file']
+    file = request.files['request']
 
     # Parse RDF file
     g = Graph()
-    g.parse(rdf_file, format='xml')
+    g.parse(file, format='xml')
 
     # Perform processing (e.g., calculate total weight)
     total_weight = 0

@@ -1,1 +1,5 @@
+# Template
 curl -X POST -F "rdf_file=@path/to/your/file.rdf" http://localhost:5000/process_rdf
+
+# DEMO
+curl -X POST -F "request=@service.rdf" http://127.0.0.1:5000/service_request
