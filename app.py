@@ -1,5 +1,10 @@
+# Local Modules
+import partition
+import translation
+
 # Modules
 from flask import Flask, request, jsonify
+import matplotlib.pyplot as plt
 from rdflib import Graph
 import networkx as nx
 import datetime
@@ -22,6 +27,13 @@ module_ip = socket.gethostbyname(socket.gethostname())
 module_port = "5863"
 module_start_time = time.time()
 module_endpoints = ["management", "service_request"]
+
+# TEMP
+temp_graph = None
+
+def print_temp_graph():
+    nx.draw(temp_graph, with_labels=True)
+    plt.savefig("graph.png")  # Save the plot as an image file
 
 # Flask App
 app = Flask(__name__)
@@ -75,25 +87,49 @@ def process_rdf():
 
     file = request.files['request']
 
-    # Parse RDF file
-    g = Graph()
-    g.parse(file, format='xml')
+    service_request = translation.rdf2request(file)
 
-    if file:
-        # Send to partition Python script
-        # get back partitioned files
-        pass
+    print("s")
+    print("Nodes:", service_request.nodes())
+    print("Edges:", service_request.edges())
 
-    # Perform processing (e.g., calculate total weight)
-    total_weight = 0
-    for s, p, o in g:
-        if str(p) == 'http://example.org/weight':
-            total_weight += float(o)
+    s1, s2, s3 = partition.partition(service_request, n_domain=3)
 
-    # Generate results
-    results = {'total_weight': total_weight}
+    print("s1")
+    print("Nodes:", s1.nodes())
+    print("Edges:", s1.edges())
 
-    return jsonify(results)
+    print("s2")
+    print("Nodes:", s2.nodes())
+    print("Edges:", s2.edges())
+
+    print("s3")
+    print("Nodes:", s3.nodes())
+    print("Edges:", s3.edges())
+
+    translation.request2rdf(s1, "sp1.rdf")
+    translation.request2rdf(s2, "sp2.rdf")
+    translation.request2rdf(s3, "sp3.rdf")
+
+    # # Parse RDF file
+    # g = Graph()
+    # g.parse(file, format='xml')
+
+    # if file:
+    #     # Send to partition Python script
+    #     # get back partitioned files
+    #     pass
+
+    # # Perform processing (e.g., calculate total weight)
+    # total_weight = 0
+    # for s, p, o in g:
+    #     if str(p) == 'http://example.org/weight':
+    #         total_weight += float(o)
+
+    # # Generate results
+    # results = {'total_weight': total_weight}
+
+    return jsonify("exported")
 
 # SO Endpoint
 # << TBD >>
