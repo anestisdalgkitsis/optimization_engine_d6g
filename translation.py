@@ -50,14 +50,22 @@ def rdf2request(input_file="input.rdf"):
         cpu = None
         node_type = None
 
+        # # Extract CPU and type information for the node
+        # for _, _, value in rdf_graph.triples((node_uri, None, None)):
+        #     if value.startswith(EX):
+        #         predicate = value.split("/")[-1]
+        #         if predicate == "cpu":
+        #             cpu = int(rdf_graph.value(subject=node_uri, predicate=EX.cpu, default=None))
+        #         elif predicate == "type":
+        #             node_type = str(rdf_graph.value(subject=node_uri, predicate=EX.type, default=None))
+        
         # Extract CPU and type information for the node
-        for _, _, value in rdf_graph.triples((node_uri, None, None)):
-            if value.startswith(EX):
-                predicate = value.split("/")[-1]
-                if predicate == "cpu":
-                    cpu = int(rdf_graph.value(subject=node_uri, predicate=EX.cpu, default=None))
-                elif predicate == "type":
-                    node_type = str(rdf_graph.value(subject=node_uri, predicate=EX.type, default=None))
+        for name, attr, value in rdf_graph.triples((node_uri, None, None)):
+            predicate = attr.split("/")[-1]
+            if predicate == "cpu":
+                cpu = int(rdf_graph.value(subject=node_uri, predicate=EX.cpu, default=None))
+            elif predicate == "type":
+                node_type = str(rdf_graph.value(subject=node_uri, predicate=EX.type, default=None))
 
         # Add node to the graph
         if cpu is not None and node_type is not None:

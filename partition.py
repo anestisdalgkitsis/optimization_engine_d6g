@@ -8,7 +8,7 @@ import copy
 # Ported from Cyril's work.
 # simple partition with random cut points
 def partition(r, n_domain=3):
-    G = r['service_graph']
+    # G = r['service_graph']
     G = r
     assert len(G.nodes) >= n_domain
     valid = False
@@ -31,23 +31,33 @@ def partition(r, n_domain=3):
           valid=True
           print("END w-w")
     ##
-    H0 = nx.Graph(G.subgraph([str(n) for n in G0]))
+    # print("-test-start-")
+    # print([n for n in G0])
+    # print(G.subgraph([n for n in G0]))
+    # print(nx.Graph(G.subgraph([n for n in G0])))
+    # print("-test-end-")
+
+    # H0 = nx.Graph(G.subgraph([str(n) for n in G0]))
+    H0 = nx.Graph(G.subgraph([n for n in G0]))
     print("H0")
     print(H0)
-    H1 = nx.Graph(G.subgraph([str(n) for n in G1]))
+    # H1 = nx.Graph(G.subgraph([str(n) for n in G1]))
+    H1 = nx.Graph(G.subgraph([n for n in G1]))
     print("H1")
     print(H1)
-    H2 = nx.Graph(G.subgraph([str(n) for n in G2]))
+    # H2 = nx.Graph(G.subgraph([str(n) for n in G2]))
+    H2 = nx.Graph(G.subgraph([n for n in G2]))
     print("H2")
     print(H2)
     ##
     r0 = copy.deepcopy(r)
-    r0['service_graph'] = H0
-    # r0 = H0
+    # r0['service_graph'] = H0
+    r0 = H0
     r1 = copy.deepcopy(r)
-    r1['service_graph'] = H1
-    # r1 = H1
+    # r1['service_graph'] = H1
+    r1 = H1
     r2 = copy.deepcopy(r)
-    r2['service_graph'] = H2
-    # r2 = H2
+    # r2['service_graph'] = H2
+    r2 = H2
+
     return r0, r1, r2
