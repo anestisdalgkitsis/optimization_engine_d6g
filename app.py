@@ -111,31 +111,11 @@ def process_rdf():
     translation.request2rdf(s2, "sp2.rdf")
     translation.request2rdf(s3, "sp3.rdf")
 
-    # # Parse RDF file
-    # g = Graph()
-    # g.parse(file, format='xml')
-
-    # if file:
-    #     # Send to partition Python script
-    #     # get back partitioned files
-    #     pass
-
-    # # Perform processing (e.g., calculate total weight)
-    # total_weight = 0
-    # for s, p, o in g:
-    #     if str(p) == 'http://example.org/weight':
-    #         total_weight += float(o)
-
-    # # Generate results
-    # results = {'total_weight': total_weight}
-
     return jsonify("exported")
 
 # SO Endpoint
-# << TBD >>
 
 # Monitoring Endpoint
-# << TBD >>
 
 # Functions
 
