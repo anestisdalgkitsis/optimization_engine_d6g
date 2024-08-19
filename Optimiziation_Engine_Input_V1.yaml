@@ -1,0 +1,246 @@
+# Generic Service Graph
+
+version: '1.0'
+services:
+	- name: Service1
+	  service_id:
+	  description:
+	  validation_time:
+	  lifecycle_status:
+	  specifications:
+	  service_graph_template_for_dataplane:adress_link or we can define a template [UE-NodeB - [N3] - UPF-[N6] - DN]
+	  service_graph_template_for_controlplane:adress_link
+data_plane:
+	- name: Service1_data_plane
+	  type: network_element
+	  service_type: data_plane
+	  slice_type: x_Slice
+	  customer_name: Customer X
+	  validation_time: "2024-07-29T10:00:00Z"
+	  QoS_metrics:
+		latency: "10 ms"
+		throughput: "500 Mbps"
+		packet_loss: "0.05%"
+	   general_description: "Description of Service1 which handles data plane operations."
+
+control_plane:
+	- name: Service1_control_plane
+	  type: network_element
+	  service_type: control_plane
+	  slice_type: x_Slice
+	  customer_name: Customer X
+	  validation_time: "2024-07-29T10:00:00Z"
+	  QoS_metrics:
+
+  
+connections:
+  - from: Service1
+    to: Service1_user_plane
+    description: "Service1 communicates data plane information to Service1_user_plane."
+
+  - from: Service1
+    to: Service1_control_plane
+    description: "Service1 forwards control plane information to Service1_control_plane."
+
+
+# Communication Access Service Graph
+
+{
+  "version": "1.0",
+  "services nodes": [
+    {
+      "name": "eNodeB1",
+      "id": VNF1,
+      "Administrative state":
+      "category": "network_element",
+      "description": "Evolved Node B (eNodeB) for handling radio communication at Site 1.",
+      "resource​ characteristic":
+      "resource specification​": {
+        "id": "eNodeB1",
+        "location": "Site 1",
+        "frequency_band": "1800 MHz",
+        "max_users": 800,
+        "max_cell_radius": "5 km"
+      },
+      "resource​ status":
+      "usage​ state":
+      "interfaces": {
+	"N2":toAMF1,
+	"N3":toUPF1,toUPF2
+      }
+    },
+    {
+      "name": "eNodeB2",
+      "id": VNF2,
+      "Administrative state":
+      "category": "network_element",
+      "description": "Evolved Node B (eNodeB) for handling radio communication at Site 2.",
+      "resource​ characteristic":
+      "resource specification​": {
+        "id": "eNodeB2",
+        "location": "Site 2",
+        "frequency_band": "2100 MHz",
+        "max_users": 1000,
+      },
+      "resource​ status":
+      "usage​ state":
+      "interfaces": {
+	"N2":toAMF1,
+	"N3":toUPF1,toUPF2
+      }
+     },
+    {
+      "name": "eNodeB3",
+      "id": VNF3,
+      "Administrative state":
+      "category": "network_element",
+      "description": "Evolved Node B (eNodeB) for handling radio communication at Site 3.",
+      "resource​ characteristic":
+      "resource specification​": {
+        "id": "eNodeB3",
+        "location": "Site 3",
+        "frequency_band": "2600 MHz",
+        "max_users": 1200,
+      }
+      "resource​ status":
+      "usage​ state":
+      "interfaces": {
+	"N2":toAMF1
+	"N3":toUPF1,toUPF2
+      }
+    },
+    {
+      "name": "AMF",
+      "id": VNF4,
+      "Administrative state":
+      "category": "network_element",
+      "description": "Access and Mobility Management Function (AMF) manages registration, connection, and mobility.",
+      "resource​ characteristic":
+      "resource specification​": {
+        "id": "AMF-001",
+        "version": "2.0",
+        "supported_protocols": [
+          "S1AP",
+          "NGAP"
+        ],
+        "max_connections": 10000,
+        "redundancy": true
+      },
+      "resource​ status":
+      "usage​ state":,
+      "interfaces": {
+	"N2":toNodeB1, toNodeB2, toNodeB3,
+	"N11":toSMF
+      }
+    },
+    {
+      "name": "SMF",
+      "id": VNF5,
+      "Administrative state":
+      "category": "network_element",
+      "description": "Session Management Function (SMF) manages sessions, QoS, and traffic routing.",
+      "resource​ status":
+      "usage​ state":
+      "interfaces": {
+	"N11":toAMF,
+	"N4":toUPF1, toUPF2
+      }
+      },
+    {
+      "name": "UPF1",
+      "id": VNF6,
+      "Administrative state":
+      "category": "network_element",
+      "description": "User Plane Function (UPF) for handling user plane data forwarding and traffic routing at Site 1.",
+      "resource​ characteristic":
+      "resource specification​":{
+        "id": "UPF1",
+        "location": "Site 1",
+        "supported_protocols": [
+          "GTP-U"
+        ],
+        "max_traffic_capacity": "10 Gbps"
+      }
+      "resource​ status":
+      "usage​ state":
+      "interfaces": {
+	"N4":toSMF
+	"N3":toNodeB1, toNodeB2, toNodeB3,
+      }
+     },
+    {
+      "name": "UPF2",
+      "id": VNF7,
+      "Administrative state":
+      "category": "network_element",
+      "description": "User Plane Function (UPF) for handling user plane data forwarding and traffic routing at Site 2.",
+      "resource​ characteristic":
+      "resource specification​":{
+        "id": "UPF2",
+        "location": "Site 2",
+        "supported_protocols": [
+          "GTP-U"
+        ],
+        "max_traffic_capacity": "15 Gbps"
+      }
+      "resource​ status":
+      "usage​ state":
+      "interfaces": {
+	"N4":toSMF
+	"N3":toNodeB1, toNodeB2, toNodeB3,
+      }
+    },
+    {
+      "name": "Firewall",
+      "id": VNF8,
+      "Administrative state":
+      "category": "security",
+      "description": "Monitors and controls incoming and outgoing network traffic based on security rules.",
+      "resource​ status":
+      "usage​ state":
+    }
+  ],
+  "node connections": [
+    {
+      "from": "eNodeB1",
+      "to": "AMF",
+      "description": "eNodeB1 forwards user connection requests and handover information to the AMF."
+    },
+    {
+      "from": "eNodeB2",
+      "to": "AMF",
+      "description": "eNodeB2 forwards user connection requests and handover information to the AMF."
+    },
+    {
+      "from": "eNodeB3",
+      "to": "AMF",
+      "description": "eNodeB3 forwards user connection requests and handover information to the AMF."
+    },
+    {
+      "from": "AMF",
+      "to": "SMF",
+      "description": "AMF communicates session management and mobility requests to the SMF."
+    },
+    {
+      "from": "SMF",
+      "to": "UPF1",
+      "description": "SMF directs session data and QoS parameters to UPF1 for traffic handling."
+    },
+    {
+      "from": "SMF",
+      "to": "UPF2",
+      "description": "SMF directs session data and QoS parameters to UPF2 for traffic handling."
+    },
+    {
+      "from": "UPF1",
+      "to": "Firewall",
+      "description": "UPF1 sends traffic data through the Firewall for security filtering."
+    },
+    {
+      "from": "UPF2",
+      "to": "Firewall",
+      "description": "UPF2 sends traffic data through the Firewall for security filtering."
+    },
+
+  ]
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Flask API Control Panel</h1>
+
+    <button onclick="controlAction('start')">Start</button>
+    <button onclick="controlAction('stop')">Stop</button>
+    <button onclick="getStatus()">Get Status</button>
+
+    <p id="status">Status: Unknown</p>
+
+    <script>
+        function controlAction(action) {
+            fetch('/api/' + action, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').innerText = 'Status: ' + data.status;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function getStatus() {
+            fetch('/api/status')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').innerText = 'Status: ' + data.status;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

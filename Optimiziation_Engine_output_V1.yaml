@@ -1,0 +1,101 @@
+
+# Communication Access Service Graph
+{
+  "version": "1.0",
+  "services": {
+    "RAN": [
+      {
+        "name": "eNodeB2",
+        "type": "network_element",
+        "service_type": "radio_access",
+        "slice_type": X_slice
+        "customer_name": "Customer X",
+        "validation_time": "2024-07-29T10:00:00Z",
+        "general_description": "Evolved Node B (eNodeB) for handling radio communication at Site 2."
+      }
+	QoS_Specification:
+      {
+	Availability=aa %, 
+	Latency=bb ms,
+	Bandwidth=zz mbps
+      }
+    ],
+    "Core": [
+      {
+        "name": "AMF",
+        "type": "network_element",
+        "service_type": "control_plane",
+        "slice_type": "All",
+        "customer_name": "Customer X",
+        "validation_time": "2024-07-29T10:00:00Z",
+        "general_description": "Access and Mobility Management Function (AMF) manages registration, connection, and mobility."
+      },
+      {
+        "name": "SMF",
+        "type": "network_element",
+        "service_type": "control_plane",
+        "slice_type": "All",
+        "customer_name": "Customer X",
+        "validation_time": "2024-07-29T10:00:00Z",
+        "general_description": "Session Management Function (SMF) manages sessions, QoS, and traffic routing."
+      }
+	
+        "name": "UPF2",
+        "type": "network_element",
+        "service_type": "user_plane",
+        "slice_type": "X_slice",
+        "customer_name": "Customer B",
+        "validation_time": "2024-07-29T10:00:00Z",
+        "general_description": "User Plane Function (UPF) for handling user plane data forwarding and traffic routing at Site 2."
+      }
+    ]
+	QoS_Specification:
+      {
+	Availability=xx %, 
+	Latency=yy ms,
+	Bandwidth=zz mbps
+      }
+  },
+  "connections_user_plane": [
+    {
+      "from": "eNodeB2",
+      "to": "AMF",
+      "description": "eNodeB2 forwards user connection requests and handover information to the AMF."
+    },
+    {
+      "from": "UPF2",
+      "to": "Firewall/DN",
+      "description": "UPF2 sends traffic data through the Firewall for security filtering."
+    }
+
+  ]
+
+  "connections_control_plane": [
+    {
+      "from": "eNodeB2",
+      "to": "AMF",
+      "description": "eNodeB2 forwards user connection requests and handover information to the AMF."
+    },
+    {
+      "from": "AMF",
+      "to": "SMF",
+      "description": "AMF communicates session management and mobility requests to the SMF."
+    },
+
+    {
+      "from": "SMF",
+      "to": "UPF2",
+      "description": "SMF directs session data and QoS parameters to UPF2 for traffic handling."
+    },
+    {
+      "from": "UPF2",
+      "to": "Firewall/DN",
+      "description": "UPF2 sends control data through the Firewall for security filtering."
+    }
+  ]<
+}
+
+
+
+
+
