@@ -1,5 +1,6 @@
 # NEW DEMO
-curl -X POST -F "request=@Optimiziation_Engine_Input_V1.yaml" http://127.0.0.1:5863/service_request
+curl -X POST -F "request=@sid85034.json" http://127.0.0.1:5863/service_request
+# curl -X POST -F "request=@Optimiziation_Engine_Input_V1.yaml" http://127.0.0.1:5863/service_request
 
 # Template
 # curl -X POST -F "rdf_file=@path/to/your/file.rdf" http://localhost:5000/process_rdf

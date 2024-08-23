@@ -13,6 +13,9 @@ import datetime
 import socket
 import random
 import time
+import json
+import yaml
+import pprint as pprint
 
 # Global Settings
 active_partition_algorithm = "default"
@@ -24,19 +27,11 @@ automation_list = ["partition"]
 
 # Module Info
 module_name = "Network Optimization Module"
-module_version = "0.28 Alpha"
+module_version = "0.35 Alpha"
 module_ip = socket.gethostbyname(socket.gethostname())
 module_port = "5863"
 module_start_time = time.time()
 module_endpoints = ["management", "service_request"]
-
-
-# TEMP
-temp_graph = None
-
-def print_temp_graph():
-    nx.draw(temp_graph, with_labels=True)
-    plt.savefig("graph.png")  # Save the plot as an image file
 
 
 # ROUTES
@@ -112,39 +107,57 @@ def incoming_request():
     # Check if it is a request indeed
     if 'request' not in request.files:
         return jsonify({'error': 'No service request provided'})
-    data = request.files['request']
+    else:
+        print("Received request!")
+    file_storage = request.files['request']
+
+    # Decode
+    file_content = file_storage.read().decode('utf-8')
+
+    # Clean file
+    data = json.loads(file_content)
+
+    # print("JSON data check:\n---")
+    # pprint.pprint(data)
+    # print("---")
+    # exit()
 
     # Send file for translation
     graph = translation.request2graph(data)
 
-    # print("s")
-    # print("Nodes:", graph.nodes())
-    # print("Edges:", graph.edges())
+    # print("Graph Report:")
+    # print("-Nodes:", graph.nodes())
+    # for node in graph.nodes(data=True):
+    #     print(f"Node: {node[0]}, CPU: {node[1].get('cpu')}")
+    # print("-Edges:", graph.edges())
+    # for edge in graph.edges(data=True):
+    #     print(f"Edge from {edge[0]} to {edge[1]}, Bandwidth: {edge[2].get('bandwidth')}")
 
+    # Parition Service
     s1, s2, s3 = partition.partition(graph, n_domain=3)
 
-    # print("s1")
-    # print("Nodes:", s1.nodes())
-    # print("Edges:", s1.edges())
+    # print("s1 Sub-Graph Report:")
+    # print("-Nodes:", s1.nodes())
+    # print("-Edges:", s1.edges())
 
-    # print("s2")
-    # print("Nodes:", s2.nodes())
-    # print("Edges:", s2.edges())
+    # print("s2 Sub-Graph Report:")
+    # print("-Nodes:", s2.nodes())
+    # print("-Edges:", s2.edges())
 
-    # print("s3")
-    # print("Nodes:", s3.nodes())
-    # print("Edges:", s3.edges())
+    # print("s3 Sub-Graph Report:")
+    # print("-Nodes:", s3.nodes())
+    # print("-Edges:", s3.edges())
 
-    translation.graph2request(s1, "sp1.rdf")
-    translation.graph2request(s2, "sp2.rdf")
-    translation.graph2request(s3, "sp3.rdf")
+    # Return Service
+    translation.graph2request(s1, "outbox/sid85034_s0.json")
+    translation.graph2request(s2, "outbox/sid85034_s1.json")
+    translation.graph2request(s3, "outbox/sid85034_s2.json")
 
     return jsonify("exported")
 
 # SO Endpoint
 
 # Monitoring Endpoint
-
 
 # UTILITY FUNCTIONS
 

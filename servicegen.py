@@ -1,11 +1,17 @@
 # Service request generator
+# v2.16
 
 # Local Modules
 import translation
 
 # Modules
+import matplotlib.pyplot as plt
 import networkx as nx
 import random
+
+# def print_graph(graph):
+#     nx.draw(graph, with_labels=True)
+#     plt.savefig("graph.png")  # Save the plot as an image file
 
 # Port from Cyril's work
 
@@ -31,7 +37,8 @@ def request(length=(5, 10)):
 
     nVNF = random.randint(*length)
     G = gen_sfc(nVNF)
+    # print_graph(G)
     return G
 
 sg = request((8, 12))
-rdf_request = translation.request2rdf(sg, "gen_service.rdf")
+service_request = translation.graph2request(sg, "inbox/sid85034.json")
