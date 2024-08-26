@@ -39,7 +39,7 @@ module_endpoints = ["management", "service_request"]
 # Flask App
 app = Flask(__name__)
 
-# Web-UI
+# Web-UI Dashboard
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -47,19 +47,19 @@ def home():
 @app.route('/api/start', methods=['POST'])
 def start():
     # Your logic for starting
-    return jsonify({"status": "started"})
+    return jsonify({"status": "Running"})
 
 @app.route('/api/stop', methods=['POST'])
 def stop():
     # Your logic for stopping
-    return jsonify({"status": "stopped"})
+    return jsonify({"status": "Standby"})
 
-@app.route('/api/status', methods=['GET'])
-def status():
-    # Your logic for getting status
-    return jsonify({"status": "running"})  # or "stopped"
+# @app.route('/api/status', methods=['GET'])
+# def status():
+#     # Your logic for getting status
+#     return jsonify({"status": "running"})  # or "stopped"
 
-# Management API
+# Management API (will be merged with Web-UI)
 
 @app.route('/management', methods=['POST'])
 def management():
@@ -125,13 +125,14 @@ def incoming_request():
     # Send file for translation
     graph = translation.request2graph(data)
 
-    # print("Graph Report:")
-    # print("-Nodes:", graph.nodes())
-    # for node in graph.nodes(data=True):
-    #     print(f"Node: {node[0]}, CPU: {node[1].get('cpu')}")
-    # print("-Edges:", graph.edges())
-    # for edge in graph.edges(data=True):
-    #     print(f"Edge from {edge[0]} to {edge[1]}, Bandwidth: {edge[2].get('bandwidth')}")
+    print("---\nGraph Report:")
+    print("-Nodes:", graph.nodes())
+    for node in graph.nodes(data=True):
+        print(f"Node: {node[0]}, CPU: {node[1].get('cpu')}")
+    print("-Edges:", graph.edges())
+    for edge in graph.edges(data=True):
+        print(f"Edge from {edge[0]} to {edge[1]}, Bandwidth: {edge[2].get('bandwidth')}")
+    print("---")
 
     # Parition Service
     s1, s2, s3 = partition.partition(graph, n_domain=3)

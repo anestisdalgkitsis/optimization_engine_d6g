@@ -14,7 +14,6 @@ import random
 #     plt.savefig("graph.png")  # Save the plot as an image file
 
 # Port from Cyril's work
-
 def request(length=(5, 10)):
 
     def gen_sfc(num_nodes):
