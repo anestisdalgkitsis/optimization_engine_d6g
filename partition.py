@@ -1,11 +1,10 @@
-# Partition automations
+# Partition dummy automation
+# Ported from Cyril's work.
 
 # Modules
 import networkx as nx
 import random
 import copy
-
-# Ported from Cyril's work.
 
 # simple partition with random cut points
 def partition(r, n_domain=3):

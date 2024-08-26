@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Panel</title>
+    <title>Network Optimization Engine Control Panel</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>Flask API Control Panel</h1>
+    <h1>Network Optimization Engine</h1>
+    <p>Desire6G | Dr. Anestis Dalgkitsis</p>
+    <h2>Control Panel</h2>
 
-    <button onclick="controlAction('start')">Start</button>
-    <button onclick="controlAction('stop')">Stop</button>
-    <button onclick="getStatus()">Get Status</button>
+    <button onclick="controlAction('start')">Enable</button>
+    <button onclick="controlAction('stop')">Disable</button>
+    <!-- <button onclick="getStatus()">Get Status</button> -->
 
     <p id="status">Status: Unknown</p>
+
+    <p>TBD dropdown to select active algorithm</p>
+
+    <!-- <p>TBD auto-evaluation results</p> -->
+
+    <!-- <p>TBD LLM autoselect setting</p> -->
 
     <script>
         function controlAction(action) {
