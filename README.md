@@ -19,7 +19,8 @@ Don't forget to activate `.venv`!
 2. Start the NOE Module  
 `Python3 app.py`
 
-3. Send the services request to NOE:  
+3. In a new terminal window, send the service request to NOE:  
+`cd inbox`
 `curl -X POST -F "request=@sid85034.json" http://127.0.0.1:5863/service_request`
 
 ## Plan
