@@ -11,14 +11,16 @@ tbd
 tbd
 
 ## Demo Instructions
-Generate a random service request:
-Python3 servicegen.py
+Don't forget to activate `.venv`!
 
-Start the NOE Module
-Python3 app.py
+1. Generate a random service request: 
+`Python3 servicegen.py`
 
-Send the services request to NOE:
-curl -X POST -F "request=@sid85034.json" http://127.0.0.1:5863/service_request
+2. Start the NOE Module 
+`Python3 app.py`
+
+3. Send the services request to NOE: 
+`curl -X POST -F "request=@sid85034.json" http://127.0.0.1:5863/service_request`
 
 ## Plan
 - [ ] Phase out management.py and replace it with UI
