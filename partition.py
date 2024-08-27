@@ -14,7 +14,6 @@ def partition(r, n_domain=3):
     while not valid:
       cut_point = random.sample(list(range(1, len(G.nodes))), n_domain-1)
       cut_point.sort()
-      # idx = list(range(len(G.nodes)))
       idx = [str(n) for n in list(range(len(G.nodes)))]
       ##
       G0 = idx[:cut_point[0]]
