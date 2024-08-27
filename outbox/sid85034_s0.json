@@ -2,8 +2,8 @@
     "version": "1.0",
     "services": [
         {
-            "name": "2",
-            "cpu": 1,
+            "name": "0",
+            "cpu": 7,
             "type": "vnf",
             "slice": "unknown",
             "customer": "unknown",
@@ -20,8 +20,17 @@
             "description": "unknown"
         },
         {
-            "name": "0",
-            "cpu": 7,
+            "name": "2",
+            "cpu": 1,
+            "type": "vnf",
+            "slice": "unknown",
+            "customer": "unknown",
+            "validation": "unknown",
+            "description": "unknown"
+        },
+        {
+            "name": "3",
+            "cpu": 5,
             "type": "vnf",
             "slice": "unknown",
             "customer": "unknown",
@@ -38,15 +47,21 @@
     ],
     "connections": [
         {
-            "from": "2",
+            "from": "0",
             "to": "1",
-            "bandwidth": 4,
+            "bandwidth": 1,
             "description": "unknown"
         },
         {
             "from": "1",
-            "to": "0",
-            "bandwidth": 1,
+            "to": "2",
+            "bandwidth": 4,
+            "description": "unknown"
+        },
+        {
+            "from": "2",
+            "to": "3",
+            "bandwidth": 9,
             "description": "unknown"
         }
     ]
