@@ -3,7 +3,6 @@
 
 import networkx as nx
 import json
-# import yaml
 
 def request2graph(data):
 
@@ -13,17 +12,11 @@ def request2graph(data):
 
     # Add nodes to the graph
     for node in data["services"]:
-        # print(node['name'], node['cpu'], node['type'])
-        # graph.add_node(node["name"], **node)
         graph.add_node(node['name'], cpu=node['cpu'], type=node['type'])
-        # G.add_node(node_id, cpu=cpu, type=node_type)
 
     # Add edges to the graph based on the connections
     for connection in data["connections"]:
-        # print(connection['from'], connection['to'], connection['bandwidth'])
-        # graph.add_edge(connection["from"], connection["to"], **connection)
         graph.add_edge(connection['from'], connection['to'], bandwidth=connection['bandwidth'])
-        # G.add_edge(source_id, target_id, bandwidth=bandwidth)
 
     return graph
 
