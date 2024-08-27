@@ -2,6 +2,15 @@
     "version": "1.0",
     "services": [
         {
+            "name": "2",
+            "cpu": 1,
+            "type": "vnf",
+            "slice": "unknown",
+            "customer": "unknown",
+            "validation": "unknown",
+            "description": "unknown"
+        },
+        {
             "name": "1",
             "cpu": 2,
             "type": "vnf",
@@ -28,6 +37,12 @@
         }
     ],
     "connections": [
+        {
+            "from": "2",
+            "to": "1",
+            "bandwidth": 4,
+            "description": "unknown"
+        },
         {
             "from": "1",
             "to": "0",

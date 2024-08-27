@@ -1,5 +1,5 @@
 # Dr. Anestis Dalgkitsis
-# Version 2.0
+# Version 3.65
 
 # Local Modules
 import partition
@@ -10,14 +10,10 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_socketio import SocketIO, emit
 import matplotlib.pyplot as plt
 import networkx as nx
-# import threading
-import datetime
+import argparse
 import socket
-import random
 import time
 import json
-import yaml
-import pprint as pprint
 
 # Global Settings
 active_partition_algorithm = "default"
@@ -47,8 +43,11 @@ module_endpoints = ["management", "service_request"]
 # TBD
 
 
-# Arguments Input
-# TBD
+# ARGUMENTS
+parser = argparse.ArgumentParser(description="A script that processes command-line arguments.")
+# parser.add_argument('input', type=str, help='Input file or value')
+parser.add_argument('--verbose', action='store_true', help='Enable verbose output')
+args = parser.parse_args()
 
 
 # ROUTES
@@ -95,7 +94,8 @@ def incoming_request():
         return jsonify({'error': 'No service request provided'})
     else:
         request_count += 1
-        print("Received request! req: " + str(request_count))
+        if args.verbose:
+            print("Received request! req: " + str(request_count))
     file_storage = request.files['request']
 
     # Decode
@@ -127,4 +127,5 @@ def incoming_request():
 
 # MAIN
 if __name__ == '__main__':
+    print(f"Verbose mode: {'on' if args.verbose else 'off'}")
     app.run(debug=True, port=module_port)

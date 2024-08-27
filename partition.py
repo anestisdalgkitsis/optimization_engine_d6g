@@ -24,14 +24,14 @@ def partition(r, n_domain=3):
           valid=True
     ##
     H0 = nx.Graph(G.subgraph([n for n in G0]))
-    print("H0")
-    print(H0)
+    # print("H0")
+    # print(H0)
     H1 = nx.Graph(G.subgraph([n for n in G1]))
-    print("H1")
-    print(H1)
+    # print("H1")
+    # print(H1)
     H2 = nx.Graph(G.subgraph([n for n in G2]))
-    print("H2")
-    print(H2)
+    # print("H2")
+    # print(H2)
     ##
     r0 = copy.deepcopy(r)
     r0 = H0

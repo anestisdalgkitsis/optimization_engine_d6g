@@ -2,8 +2,8 @@
     "version": "1.0",
     "services": [
         {
-            "name": "2",
-            "cpu": 1,
+            "name": "3",
+            "cpu": 5,
             "type": "vnf",
             "slice": "unknown",
             "customer": "unknown",
@@ -11,8 +11,8 @@
             "description": "unknown"
         },
         {
-            "name": "3",
-            "cpu": 5,
+            "name": "4",
+            "cpu": 8,
             "type": "vnf",
             "slice": "unknown",
             "customer": "unknown",
@@ -29,9 +29,9 @@
     ],
     "connections": [
         {
-            "from": "2",
-            "to": "3",
-            "bandwidth": 9,
+            "from": "3",
+            "to": "4",
+            "bandwidth": 6,
             "description": "unknown"
         }
     ]
