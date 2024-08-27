@@ -56,7 +56,7 @@ args = parser.parse_args()
 app = Flask(__name__)
 # socketio = SocketIO(app)
 
-# Web-UI Dashboard 
+# Web-UI Dashboard  
 @app.route('/')
 def home():
     return render_template('index.html', algorithms=algorithms)
