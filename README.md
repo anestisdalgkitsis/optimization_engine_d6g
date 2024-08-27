@@ -29,6 +29,7 @@ Don't forget to activate `.venv`!
 - [x] Updated translation.py file with YAML or JSON 
 - [x] servicegen2.py that generates random digraph services
 - [ ] Basic UI functionality (Optional)
+- [x] Re-structure pre-defined protocol
 - [x] Clear old rdf parts
 
 ## Troubleshooting

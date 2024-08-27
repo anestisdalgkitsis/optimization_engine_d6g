@@ -92,7 +92,7 @@
       "to": "Firewall/DN",
       "description": "UPF2 sends control data through the Firewall for security filtering."
     }
-  ]<
+  ]
 }
 
 

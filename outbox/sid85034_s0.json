@@ -1,5 +1,53 @@
 {
     "version": "1.0",
-    "services nodes": [],
-    "node connections": []
+    "services": [
+        {
+            "name": "0",
+            "cpu": 7,
+            "type": "vnf",
+            "slice": "unknown",
+            "customer": "unknown",
+            "validation": "unknown",
+            "description": "unknown"
+        },
+        {
+            "name": "2",
+            "cpu": 1,
+            "type": "vnf",
+            "slice": "unknown",
+            "customer": "unknown",
+            "validation": "unknown",
+            "description": "unknown"
+        },
+        {
+            "name": "1",
+            "cpu": 2,
+            "type": "vnf",
+            "slice": "unknown",
+            "customer": "unknown",
+            "validation": "unknown",
+            "description": "unknown"
+        }
+    ],
+    "qos": [
+        {
+            "availability": "aa %",
+            "latency": "ll ms",
+            "bandwidth": "bb mbps"
+        }
+    ],
+    "connections": [
+        {
+            "from": "0",
+            "to": "1",
+            "bandwidth": 1,
+            "description": "unknown"
+        },
+        {
+            "from": "2",
+            "to": "1",
+            "bandwidth": 4,
+            "description": "unknown"
+        }
+    ]
 }
