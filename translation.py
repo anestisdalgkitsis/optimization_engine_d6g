@@ -1,8 +1,6 @@
-# Two-way RDF to NetworkX translation
+# Two-way JSON to NetworkX translation
 # Port from Anestis work
 
-# from rdflib import Graph, Literal, RDF, URIRef, Namespace
-# from rdflib.namespace import FOAF, XSD
 import networkx as nx
 import json
 # import yaml
@@ -31,52 +29,43 @@ def request2graph(data):
 
 def graph2request(graph, filename="outbox/output.json"):
 
-    # # Prepare the data to be saved as JSON
-    # data = {
-    #     "version": "1.0",
-    #     "services nodes": [],
-    #     "node connections": []
-    # }
-
-    # # Add nodes to the JSON structure
-    # for node, node_data in graph.nodes(data=True):
-    #     data["services nodes"].append({
-    #         "name": "id_" + node,
-    #         **{k: v for k, v in node_data.items() if k != "name"}
-    #     })
-
-    # # Add edges to the JSON structure
-    # for from_node, to_node, edge_data in graph.edges(data=True):
-    #     connection = {
-    #         "from": from_node,
-    #         "to": to_node,
-    #         **{k: v for k, v in edge_data.items() if k not in ["from", "to"]}
-    #     }
-    #     data["node connections"].append(connection)
-
-    # Extract nodes
+    # Extract Services
     nodes = []
     for node, attr in graph.nodes(data=True):
         nodes.append({
             "name": node,
             "cpu": attr.get("cpu", 0),  # Default to 0 if not found
-            "type": attr.get("type", "unknown")  # Default to 'unknown' if not found
+            "type": attr.get("type", "unknown"),  # Default to 'unknown' if not found
+            "slice": "unknown",
+            "customer": "unknown",
+            "validation": "unknown",
+            "description": "unknown"
         })
 
-    # Extract edges
+    # Extract Connections
     edges = []
     for from_node, to_node, attr in graph.edges(data=True):
         edges.append({
             "from": from_node,
             "to": to_node,
-            "bandwidth": attr.get("bandwidth", 0)  # Default to 0 if not found
+            "bandwidth": attr.get("bandwidth", 0),  # Default to 0 if not found
+            "description": "unknown"
+        })
+
+    # Extract QoS
+    qos = []
+    qos.append({
+            "availability": "aa %",
+            "latency": "ll ms",
+            "bandwidth": "bb mbps",
         })
 
     # Construct the JSON structure
     data = {
         "version": "1.0",
-        "services nodes": nodes,
-        "node connections": edges
+        "services": nodes,
+        "qos": qos,
+        "connections": edges
     }
 
     # json.dumps(data, indent=4)
