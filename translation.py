@@ -12,14 +12,14 @@ def request2graph(data):
     graph = nx.Graph()
 
     # Add nodes to the graph
-    for node in data["services nodes"]:
+    for node in data["services"]:
         # print(node['name'], node['cpu'], node['type'])
         # graph.add_node(node["name"], **node)
         graph.add_node(node['name'], cpu=node['cpu'], type=node['type'])
         # G.add_node(node_id, cpu=cpu, type=node_type)
 
     # Add edges to the graph based on the connections
-    for connection in data["node connections"]:
+    for connection in data["connections"]:
         # print(connection['from'], connection['to'], connection['bandwidth'])
         # graph.add_edge(connection["from"], connection["to"], **connection)
         graph.add_edge(connection['from'], connection['to'], bandwidth=connection['bandwidth'])
