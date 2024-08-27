@@ -9,20 +9,68 @@
 </head>
 <body>
     <h1>Network Optimization Engine</h1>
-    <p>Desire6G | Dr. Anestis Dalgkitsis</p>
+    <p>Desire6G | Dr. Anestis Dalgkitsis (service), Cyril Hsu (partitioning)</p>
+
     <h2>Control Panel</h2>
 
     <button onclick="controlAction('start')">Enable</button>
     <button onclick="controlAction('stop')">Disable</button>
-    <!-- <button onclick="getStatus()">Get Status</button> -->
-
+    <button onclick="getStatus()">Get Status</button>
     <p id="status">Status: Unknown</p>
 
-    <p>TBD dropdown to select active algorithm</p>
+    <h2>Module Statistics</h2>
 
-    <!-- <p>TBD auto-evaluation results</p> -->
+    <p>Module Uptime: <span id="number">0</span></p>
+    <!-- <p>Last Checked</p> -->
+    <p>Request Count: <span id="requests">0</span></p>
+    <!-- <p>Requests Plot</p> -->
+    <!-- <p>Another Plot</p> -->
+    <!-- <p>Log of requests</p> -->
+    <p>Offline</p>
+    <!-- <script type="text/javascript">
+        var socket = io();
 
-    <!-- <p>TBD LLM autoselect setting</p> -->
+        // Listen for 'update_uptime' events from the server
+        socket.on('update_uptime', function(data) {
+            document.getElementById('uptime').innerText = data.uptime;
+        });
+
+        // Listen for 'update_requests' events from the server
+        socket.on('update_requests', function(data) {
+            document.getElementById('requests').innerText = data.requests;
+        });
+    </script> -->
+
+    <h2>Auto-Select Settings</h2>
+    <!-- <p>Algorithm picker</p> -->
+    <ul>
+        {% for algorithm, details in algorithms.items() %}
+        <li>
+            {{ algorithm }} - 
+            {% if details['enabled'] %}
+                Enabled
+            {% else %}
+                Disabled
+            {% endif %}
+            <form action="{{ url_for('toggle_algorithm') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="algorithm" value="{{ algorithm }}">
+                <button type="submit">
+                    {% if details['enabled'] %}
+                        Disable
+                    {% else %}
+                        Enable
+                    {% endif %}
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <!-- <p>enabled algorithms</p> -->
+    <!-- <p>Disabled algorithms</p> -->
+    <!-- <p>enble disable selected buttons</p> -->
+    <!-- <p>selector mode</p> -->
+    <!-- <p>prompt (if LLM selected)</p> -->
+    <p>Disabled</p>
 
     <script>
         function controlAction(action) {
