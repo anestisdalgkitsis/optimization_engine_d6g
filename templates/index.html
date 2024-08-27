@@ -8,40 +8,27 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>Network Optimization Engine</h1>
-    <p>Desire6G | Dr. Anestis Dalgkitsis (service), Cyril Hsu (partitioning)</p>
+    <h1>Optimization Engine</h1>
+    <p>Desire6G Module WP3 | Dr. Anestis Dalgkitsis, Cyril Hsu</p>
 
     <h2>Control Panel</h2>
 
     <button onclick="controlAction('start')">Enable</button>
     <button onclick="controlAction('stop')">Disable</button>
-    <button onclick="getStatus()">Get Status</button>
-    <p id="status">Status: Unknown</p>
+    <p id="status">Status: standby</p>
 
     <h2>Module Statistics</h2>
 
-    <p>Module Uptime: <span id="number">0</span></p>
+    <p>Module Uptime: <span id="uptime">0</span></p>
     <!-- <p>Last Checked</p> -->
     <p>Request Count: <span id="requests">0</span></p>
     <!-- <p>Requests Plot</p> -->
     <!-- <p>Another Plot</p> -->
     <!-- <p>Log of requests</p> -->
-    <p>Offline</p>
-    <!-- <script type="text/javascript">
-        var socket = io();
+    
+    <button onclick="getStatus()">Update</button>
 
-        // Listen for 'update_uptime' events from the server
-        socket.on('update_uptime', function(data) {
-            document.getElementById('uptime').innerText = data.uptime;
-        });
-
-        // Listen for 'update_requests' events from the server
-        socket.on('update_requests', function(data) {
-            document.getElementById('requests').innerText = data.requests;
-        });
-    </script> -->
-
-    <h2>Auto-Select Settings</h2>
+    <h2>Model Selection Settings</h2>
     <!-- <p>Algorithm picker</p> -->
     <ul>
         {% for algorithm, details in algorithms.items() %}
@@ -70,7 +57,7 @@
     <!-- <p>enble disable selected buttons</p> -->
     <!-- <p>selector mode</p> -->
     <!-- <p>prompt (if LLM selected)</p> -->
-    <p>Disabled</p>
+    <p>Status: Disabled</p>
 
     <script>
         function controlAction(action) {
@@ -89,6 +76,8 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById('status').innerText = 'Status: ' + data.status;
+                document.getElementById('uptime').innerText = '' + data.uptime + 's';
+                document.getElementById('requests').innerText = '' + data.requests;
             })
             .catch(error => console.error('Error:', error));
         }

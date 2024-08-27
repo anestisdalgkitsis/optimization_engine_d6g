@@ -15,28 +15,21 @@ import socket
 import time
 import json
 
-# Global Settings
-active_partition_algorithm = "default"
-
 # In-Memory Variables
 status = "standby"
-# partition_algorithms_list = ["default", "random", "auto"]
-# automation_list = ["partition"]
 start_time = time.time()
 request_count = 0
-algorithms = {
-    "partition.py": {"enabled": True},
-    "test1": {"enabled": False},
-    "test2": {"enabled": False},
+algorithms = { # this should be changed to modular
+    "partition.py (Default)": {"enabled": True},
+    "autologic.py": {"enabled": False},
+    "greedysplit.py": {"enabled": False},
 }
 
 # Module Info
-module_name = "Network Optimization Module"
+module_name = "Optimization Engine Module"
 module_version = "1.28 Beta"
 module_ip = socket.gethostbyname(socket.gethostname())
 module_port = "5863"
-module_start_time = time.time()
-module_endpoints = ["management", "service_request"]
 
 
 # Load Config files
@@ -63,18 +56,25 @@ def home():
 
 @app.route('/api/start', methods=['POST'])
 def start():
-    # Your logic for starting
-    return jsonify({"status": "Running"})
+    global status
+    status = "standby"
+    return jsonify({"status": status})
 
 @app.route('/api/stop', methods=['POST'])
 def stop():
-    # Your logic for stopping
-    return jsonify({"status": "Standby"})
+    global status
+    status = "disabled"
+    return jsonify({"status": status})
 
 @app.route('/api/status', methods=['GET'])
 def status():
-    # Your logic for getting status
-    return jsonify({"status": "running"})  # or "stopped"
+    global start_time
+    global status
+    global request_count
+
+    uptime = int(time.time() - start_time)
+
+    return jsonify({"status": status, "uptime": str(uptime), "requests": str(request_count)})
 
 @app.route('/toggle_algorithm', methods=['POST'])
 def toggle_algorithm():
@@ -88,6 +88,13 @@ def toggle_algorithm():
 @app.route('/service_request', methods=['POST'])
 def incoming_request():
     global request_count
+    global status
+
+    if status == "disabled":
+        return
+
+    # Activate busy indicator
+    status = "busy"
 
     # Check if it is a request indeed
     if 'request' not in request.files:
@@ -121,6 +128,9 @@ def incoming_request():
         "s2e": s2e,
         "s3e": s3e
     }
+
+    # Deactivate busy indicator
+    status = "standby"
 
     return jsonify(combined_response)
 
