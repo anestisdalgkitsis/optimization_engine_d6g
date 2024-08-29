@@ -21,7 +21,7 @@ import models.autologic as autologic
 import models.greedysplit as greedysplit
 
 # Selector Pool
-# import selectors.spinwheel as spinwheel
+import selectors.spinwheel as spinwheel
 
 # In-Memory Variables
 status = "standby"
