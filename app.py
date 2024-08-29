@@ -7,7 +7,6 @@ import translation
 # Modules
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_socketio import SocketIO, emit
-from datetime import datetime, timezone
 import matplotlib.pyplot as plt
 import networkx as nx
 import argparse
@@ -21,11 +20,11 @@ import models.autologic as autologic
 import models.greedysplit as greedysplit
 
 # Selector Pool
-# import selectors.spinwheel as spinwheel
+import pickers.spinwheel as spinwheel
 
 # In-Memory Variables
 status = "standby"
-start_time = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+start_time = time.time()
 request_count = 0
 algorithms = { # this should be changed to modular
     "partition.py (Default)": {"enabled": True},
@@ -35,7 +34,7 @@ algorithms = { # this should be changed to modular
 
 # Module Info
 module_name = "Optimization Engine Module"
-module_version = "1.28 Beta"
+module_version = "2.68 Beta"
 module_ip = socket.gethostbyname(socket.gethostname())
 module_port = "5863"
 
@@ -122,8 +121,20 @@ def incoming_request():
     # Send file for translation
     graph, data = translation.request2graph(data)
 
-    # Parition Service
-    s1, s2, s3 = partition.partition(graph, n_domain=3)
+    # Send to selected autoselector
+    pick = spinwheel.spinwheel(algorithms)
+    print(pick)
+
+    # Route to selected Model
+    s1, s2, s3 = None, None, None
+    if pick == "partition.py (Default)":
+        s1, s2, s3 = partition.partition(graph, n_domain=3)
+    elif pick == "autologic.py":
+        s1, s2, s3 = autologic.autologic(graph, domains=3)
+    elif pick == "greedysplit.py":
+        s1, s2, s3 = greedysplit.greedysplit(graph, domains=3)
+    else:
+        print("Error while routing to model.")
 
     # Encode
     s1e = translation.graph2request(s1, "outbox/sid85034_s0.json", data)
