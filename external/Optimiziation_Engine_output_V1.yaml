@@ -13,11 +13,11 @@
         "validation_time": "2024-07-29T10:00:00Z",
         "general_description": "Evolved Node B (eNodeB) for handling radio communication at Site 2."
       }
-	QoS_Specification:
+      QoS_Specification:
       {
-	Availability=aa %, 
-	Latency=bb ms,
-	Bandwidth=zz mbps
+        Availability=aa %, 
+        Latency=bb ms,
+        Bandwidth=zz mbps
       }
     ],
     "Core": [

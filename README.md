@@ -21,13 +21,16 @@ Don't forget to activate `.venv`!
 `curl -X POST -F "request=@sid85034.json" http://127.0.0.1:5863/service_request`
 
 ## Todo
-- [ ] Basic UI functionality
+- [ ] UI functionality
     - [ ] Realtime UI updates
-- [ ] 2 more mock partitioning algorithms
+    - [x] Basic functionality (manual refresh)
+- [x] 2 more mock partitioning algorithms
 - [ ] mock algorithm auto-selector
 - [ ] calculate QoS service info
 - [ ] Store service request log
 - [ ] Config file loading during startup
+- [ ] Create common model interfaces (for autoselection)
+- [x] Pass-through service graph info
 - [x] Phase out management.py and replace it with UI
 - [x] Demo partition (fix from Cyril)
 - [x] Return the partitioned requests back to the curler
