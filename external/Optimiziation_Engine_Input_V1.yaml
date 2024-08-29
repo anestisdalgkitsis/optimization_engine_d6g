@@ -65,8 +65,8 @@ connections:
       "resource​ status":
       "usage​ state":
       "interfaces": {
-	"N2":toAMF1,
-	"N3":toUPF1,toUPF2
+        "N2":toAMF1,
+        "N3":toUPF1,toUPF2
       }
     },
     {
@@ -85,8 +85,8 @@ connections:
       "resource​ status":
       "usage​ state":
       "interfaces": {
-	"N2":toAMF1,
-	"N3":toUPF1,toUPF2
+        "N2":toAMF1,
+        "N3":toUPF1,toUPF2
       }
      },
     {
@@ -105,8 +105,8 @@ connections:
       "resource​ status":
       "usage​ state":
       "interfaces": {
-	"N2":toAMF1
-	"N3":toUPF1,toUPF2
+        "N2":toAMF1
+        "N3":toUPF1,toUPF2
       }
     },
     {
@@ -129,8 +129,8 @@ connections:
       "resource​ status":
       "usage​ state":,
       "interfaces": {
-	"N2":toNodeB1, toNodeB2, toNodeB3,
-	"N11":toSMF
+        "N2":toNodeB1, toNodeB2, toNodeB3,
+        "N11":toSMF
       }
     },
     {
@@ -142,8 +142,8 @@ connections:
       "resource​ status":
       "usage​ state":
       "interfaces": {
-	"N11":toAMF,
-	"N4":toUPF1, toUPF2
+        "N11":toAMF,
+        "N4":toUPF1, toUPF2
       }
       },
     {
@@ -164,8 +164,8 @@ connections:
       "resource​ status":
       "usage​ state":
       "interfaces": {
-	"N4":toSMF
-	"N3":toNodeB1, toNodeB2, toNodeB3,
+        "N4":toSMF
+        "N3":toNodeB1, toNodeB2, toNodeB3,
       }
      },
     {
@@ -186,8 +186,8 @@ connections:
       "resource​ status":
       "usage​ state":
       "interfaces": {
-	"N4":toSMF
-	"N3":toNodeB1, toNodeB2, toNodeB3,
+        "N4":toSMF
+        "N3":toNodeB1, toNodeB2, toNodeB3,
       }
     },
     {

@@ -1,5 +1,6 @@
 # Two-way JSON to NetworkX translation
 # Port from Anestis work
+# v2
 
 import networkx as nx
 import json
@@ -18,9 +19,20 @@ def request2graph(data):
     for connection in data["connections"]:
         graph.add_edge(connection['from'], connection['to'], bandwidth=connection['bandwidth'])
 
-    return graph
+    decorations = {
+        "description": data["services"][0].get("description", "unknown"),
+        "slice": data["services"][0].get("slice", "unknown"),
+        "customer": data["services"][0].get("customer", "unknown"),
+        "validation": data["services"][0].get("validation", "unknown"),
+        "description_connection": data["connections"][0].get("description", "unknown"),
+        "availability": data["qos"][0].get("availability", "unknown"),
+        "latency": data["qos"][0].get("latency", "unknown"),
+        "bandwidth": data["qos"][0].get("bandwidth", "unknown"),
+    }
 
-def graph2request(graph, filename="outbox/output.json"):
+    return graph, decorations
+
+def graph2request(graph, filename="outbox/output.json", data={}):
 
     # Extract Services
     nodes = []
@@ -29,10 +41,10 @@ def graph2request(graph, filename="outbox/output.json"):
             "name": node,
             "cpu": attr.get("cpu", 0),  # Default to 0 if not found
             "type": attr.get("type", "unknown"),  # Default to 'unknown' if not found
-            "slice": "unknown",
-            "customer": "unknown",
-            "validation": "unknown",
-            "description": "unknown"
+            "slice": data.get("slice", "unknown"),
+            "customer": data.get("customer", "unknown"),
+            "validation": data.get("validation", "unknown"),
+            "description": data.get("description", "unknown"),
         })
 
     # Extract Connections
@@ -42,15 +54,15 @@ def graph2request(graph, filename="outbox/output.json"):
             "from": from_node,
             "to": to_node,
             "bandwidth": attr.get("bandwidth", 0),  # Default to 0 if not found
-            "description": "unknown"
+            "description": data.get("description_connection", "unknown")
         })
 
     # Extract QoS
     qos = []
     qos.append({
-            "availability": "aa %",
-            "latency": "ll ms",
-            "bandwidth": "bb mbps",
+            "availability": data.get("availability", "unknown"),
+            "latency": data.get("latency", "unknown"),
+            "bandwidth": data.get("bandwidth", "unknown"),
         })
 
     # Construct the JSON structure

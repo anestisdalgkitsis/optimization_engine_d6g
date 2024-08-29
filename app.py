@@ -2,7 +2,6 @@
 # Version 3.65
 
 # Local Modules
-import partition
 import translation
 
 # Modules
@@ -14,6 +13,10 @@ import argparse
 import socket
 import time
 import json
+
+# Model Pool
+import models.partition as partition
+
 
 # In-Memory Variables
 status = "standby"
@@ -112,15 +115,15 @@ def incoming_request():
     data = json.loads(file_content)
 
     # Send file for translation
-    graph = translation.request2graph(data)
+    graph, data = translation.request2graph(data)
 
     # Parition Service
     s1, s2, s3 = partition.partition(graph, n_domain=3)
 
     # Encode
-    s1e = translation.graph2request(s1, "outbox/sid85034_s0.json")
-    s2e = translation.graph2request(s2, "outbox/sid85034_s1.json")
-    s3e = translation.graph2request(s3, "outbox/sid85034_s2.json")
+    s1e = translation.graph2request(s1, "outbox/sid85034_s0.json", data)
+    s2e = translation.graph2request(s2, "outbox/sid85034_s1.json", data)
+    s3e = translation.graph2request(s3, "outbox/sid85034_s2.json", data)
 
     # Combine Response
     combined_response = {
