@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network Optimization Engine Control Panel</title>
+    <title>Optimization Engine - Dashboard</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
@@ -28,16 +28,22 @@
     
     <button onclick="getStatus()">Update</button>
 
-    <h2>Model Selection Settings</h2>
-    <!-- <p>Algorithm picker</p> -->
+    <h2>Model Selection Panel</h2>
+    <h3>Selector Pool</h3>
+    <ul>
+        <li><p>spinwheel.py (Default) - ✅ Enabled</p></li>
+        <li><p>gptpick.py - ⚠️ Error</p></li>
+    </ul>
+    <!-- <p>prompt (if LLM selected)</p> -->
+    <h3>Model Pool</h3>
     <ul>
         {% for algorithm, details in algorithms.items() %}
         <li>
             {{ algorithm }} - 
             {% if details['enabled'] %}
-                Enabled
+                ✅ Enabled
             {% else %}
-                Disabled
+                ❌ Disabled
             {% endif %}
             <form action="{{ url_for('toggle_algorithm') }}" method="POST" style="display:inline;">
                 <input type="hidden" name="algorithm" value="{{ algorithm }}">
@@ -52,12 +58,6 @@
         </li>
         {% endfor %}
     </ul>
-    <!-- <p>enabled algorithms</p> -->
-    <!-- <p>Disabled algorithms</p> -->
-    <!-- <p>enble disable selected buttons</p> -->
-    <!-- <p>selector mode</p> -->
-    <!-- <p>prompt (if LLM selected)</p> -->
-    <p>Status: Disabled</p>
 
     <script>
         function controlAction(action) {
@@ -82,5 +82,10 @@
             .catch(error => console.error('Error:', error));
         }
     </script>
+
+    <h2>Evaluators</h2>
+    <ul>
+        <li><p>reportgen_ev5.py (Default) - ⚠️ Error</p></li>
+    </ul>
 </body>
 </html>
