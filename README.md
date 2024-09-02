@@ -20,6 +20,12 @@ Don't forget to activate `.venv`!
 `cd inbox`  
 `curl -X POST -F "request=@sid85034.json" http://127.0.0.1:5863/service_request`
 
+## Deploy Container
+Simply run the following commands on root.
+
+`docker build -t oe_d6g_dalgkitsis .`
+`docker run --name Optimization_Engine_Dalgkitsis -d -p 5863:5863 oe_d6g_dalgkitsis`
+
 ## Todo
 - [ ] UI functionality
     - [ ] Realtime UI updates
@@ -27,6 +33,8 @@ Don't forget to activate `.venv`!
 - [x] 2 more mock partitioning algorithms
 - [ ] mock algorithm auto-selector
 - [ ] calculate QoS service info
+- [ ] Easy deployment with Docker
+    - [x] dockerfile
 - [ ] Store service request log
 - [ ] Config file loading during startup
 - [ ] Create common model interfaces (for autoselection)
