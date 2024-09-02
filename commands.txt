@@ -1,2 +1,6 @@
-# post latest service request from inbox folder
+# Post latest service request from inbox folder
 curl -X POST -F "request=@sid85034.json" http://127.0.0.1:5863/service_request
+
+# Easy deploy with docker
+docker build -t oe_d6g_dalgkitsis .
+docker run --name Optimization_Engine_Dalgkitsis -d -p 5863:5863 oe_d6g_dalgkitsis

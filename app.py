@@ -157,4 +157,4 @@ def incoming_request():
 # MAIN
 if __name__ == '__main__':
     print(f"Verbose mode: {'on' if args.verbose else 'off'}")
-    app.run(debug=True, port=module_port)
+    app.run(debug=True, host="0.0.0.0", port=module_port)
