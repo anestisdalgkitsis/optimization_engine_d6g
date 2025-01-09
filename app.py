@@ -20,7 +20,7 @@ import models.autologic as autologic
 import models.greedysplit as greedysplit
 
 # Selector Pool
-import pickers.spinwheel as spinwheel
+import pickers.random_selection as random_selection
 
 # In-Memory Variables
 status = "standby"
@@ -34,13 +34,14 @@ algorithms = { # this should be changed to modular
 
 # Module Info
 module_name = "Optimization Engine Module"
-module_version = "2.68 Beta"
+module_version = "3.38 Beta"
 module_ip = socket.gethostbyname(socket.gethostname())
 module_port = "5863"
 
 
 # Load Config files
 # TBD
+# Replace with env variables and take them from container setup.
 
 
 # ARGUMENTS
@@ -56,7 +57,7 @@ args = parser.parse_args()
 app = Flask(__name__)
 # socketio = SocketIO(app)
 
-# Web-UI Dashboard  
+# MANAGEMENT Endpoint (Web-UI + TUI Client Dashboards)
 @app.route('/')
 def home():
     return render_template('index.html', algorithms=algorithms)
@@ -90,7 +91,7 @@ def toggle_algorithm():
         algorithms[algorithm_name]['enabled'] = not algorithms[algorithm_name]['enabled']
     return redirect('/')
 
-# IBN Endpoint
+# SO Endpoint
 
 @app.route('/service_request', methods=['POST'])
 def incoming_request():
@@ -122,7 +123,7 @@ def incoming_request():
     graph, data = translation.request2graph(data)
 
     # Send to selected autoselector
-    pick = spinwheel.spinwheel(algorithms)
+    pick = random_selection.spinwheel(algorithms)
     print(pick)
 
     # Route to selected Model
@@ -152,6 +153,16 @@ def incoming_request():
     status = "standby"
 
     return jsonify(combined_response)
+
+# SO Endpoint
+
+@app.route('/so_config', methods=['POST'])
+def so_configuration():
+    pass
+
+@app.route('/so_re-config', methods=['POST'])
+def so_reconfiguration():
+    pass
 
 
 # MAIN

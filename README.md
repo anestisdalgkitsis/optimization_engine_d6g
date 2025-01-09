@@ -31,7 +31,7 @@ Simply run the following commands on root.
     - [ ] Realtime UI updates
     - [x] Basic functionality (manual refresh)
 - [x] 2 more mock partitioning algorithms
-- [ ] mock algorithm auto-selector
+- [x] mock algorithm auto-selector
 - [ ] calculate QoS service info
 - [ ] Easy deployment with Docker
     - [x] dockerfile

@@ -10,6 +10,15 @@ COPY . .
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install Ollama
+RUN curl -fsSL https://ollama.com/install.sh | bash
+
+# Set environment variables for Ollama
+ENV PATH="/root/.ollama/bin:$PATH"
+
+# Command to pull and run a model (define here)
+RUN ollama run llama3.1:8b
+
 # Expose the application port
 EXPOSE 5863
 
