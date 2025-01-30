@@ -1,5 +1,5 @@
 # Dr. Anestis Dalgkitsis
-# Version 4.85.34
+# Version 5.92.47
 
 # Local Modules
 import translation
@@ -20,7 +20,8 @@ import models.autologic as autologic
 import models.greedysplit as greedysplit
 
 # Selector Pool
-import pickers.spinwheel as spinwheel
+import selectors.spinwheel as spinwheel
+import selectors.intelligence as intelligence
 
 # In-Memory Variables
 status = "standby"
@@ -30,6 +31,10 @@ algorithms = { # this should be changed to modular
     "partition.py (Default)": {"enabled": True},
     "autologic.py": {"enabled": False},
     "greedysplit.py": {"enabled": False},
+}
+selectors = { # this should be changed to modular
+    "spinwheel.py (Default)": {"enabled": True},
+    "intelligence.py": {"enabled": False},
 }
 
 # Module Info
@@ -153,6 +158,10 @@ def incoming_request():
 
     # Deactivate busy indicator
     status = "standby"
+
+    # Measure processing time
+    processing_time = time.time() - proc_time
+    print("Request Processing Time: " + str(processing_time))
 
     return jsonify(combined_response)
 
