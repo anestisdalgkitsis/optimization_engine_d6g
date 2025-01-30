@@ -98,6 +98,9 @@ def incoming_request():
     global request_count
     global status
 
+    # Measure processing time
+    proc_time = time.time()
+
     if status == "disabled":
         return
 
