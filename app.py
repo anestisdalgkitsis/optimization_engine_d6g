@@ -20,8 +20,8 @@ import models.autologic as autologic
 import models.greedysplit as greedysplit
 
 # Selector Pool
-import selectors.spinwheel as spinwheel
-import selectors.intelligence as intelligence
+import pickers.spinwheel as spinwheel
+import pickers.intelligence as intelligence
 
 # In-Memory Variables
 status = "standby"
@@ -64,7 +64,7 @@ app = Flask(__name__)
 # Web-UI Dashboard  
 @app.route('/')
 def home():
-    return render_template('index.html', algorithms=algorithms)
+    return render_template('index.html', selectors=selectors, algorithms=algorithms)
 
 @app.route('/api/start', methods=['POST'])
 def start():
@@ -92,7 +92,7 @@ def status():
 def toggle_selector():
     selector_name = request.form['selector']
     if selector_name in selectors:
-        algorithms[selector_name]['enabled'] = not selectors[selector_name]['enabled']
+        selectors[selector_name]['enabled'] = not selectors[selector_name]['enabled']
     return redirect('/')
 
 @app.route('/toggle_algorithm', methods=['POST'])
@@ -136,8 +136,16 @@ def incoming_request():
     # Send file for translation
     graph, data = translation.request2graph(data)
 
-    # Send to selected autoselector
-    pick = spinwheel.spinwheel(algorithms)
+    # Route to selected autoselector
+    selection = next((key for key, info in selectors.items() if info["enabled"]), None) # Select the first that is True
+    pick = None
+    if selection == "spinwheel.py (Default)":
+        pick = spinwheel.spinwheel(algorithms)
+    elif selection == "intelligence.py":
+        pick = intelligence.llamapick(algorithms)
+    else:
+        print("Error while routing to Selector (selection is None).")
+    
     print(pick)
 
     # Route to selected Model
@@ -149,7 +157,7 @@ def incoming_request():
     elif pick == "greedysplit.py":
         s1, s2, s3 = greedysplit.greedysplit(graph, domains=3)
     else:
-        print("Error while routing to model.")
+        print("Error while routing to Model (pick is None).")
 
     # Encode
     s1e = translation.graph2request(s1, "outbox/sid85034_s0.json", data)

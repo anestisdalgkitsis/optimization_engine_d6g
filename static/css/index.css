@@ -1,0 +1,35 @@
+/* dashboard.css - Your custom styles go here */
+
+/* Example background for the entire page */
+body {
+    background-color: #f8f9fa;
+  }
+  
+  /* Make the navbar brand text stand out a bit */
+  .navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Customize how status text looks */
+  .status-indicator {
+    font-weight: 600;
+    color: #0d6efd; /* Example: Bootstrap primary blue */
+  }
+  
+  /* If you want more spacing or different styling for cards, you can add it here */
+  .card {
+    border-radius: 6px;
+  }
+  
+  /* Examples of further customizations:
+  --------------------------------------------------
+  .list-group-item {
+    font-size: 0.95rem;
+    color: #333;
+  }
+  
+  .btn {
+    border-radius: 4px;
+  }
+  -------------------------------------------------- */

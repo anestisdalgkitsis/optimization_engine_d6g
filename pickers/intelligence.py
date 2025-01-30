@@ -4,7 +4,7 @@
 # Modules
 
 # MAIN
-def gptpick(model={}, evaluation_reports={}):
+def llamapick(model={}, evaluation_reports={}):
 
     pass
 

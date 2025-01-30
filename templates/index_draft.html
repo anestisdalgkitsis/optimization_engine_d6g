@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimization Engine - Dashboard</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Optimization Engine</h1>
+    <p>Desire6G Module WP3 | Dr. Anestis Dalgkitsis, Cyril Hsu</p>
+
+    <h2>Control Panel</h2>
+
+    <button onclick="controlAction('start')">Enable</button>
+    <button onclick="controlAction('stop')">Disable</button>
+    <p id="status">Status: standby</p>
+
+    <h2>Module Statistics</h2>
+
+    <p>Module Uptime: <span id="uptime">0</span></p>
+    <!-- <p>Last Checked</p> -->
+    <p>Request Count: <span id="requests">0</span></p>
+    <!-- <p>Requests Plot</p> -->
+    <!-- <p>Another Plot</p> -->
+    <!-- <p>Log of requests</p> -->
+    
+    <button onclick="getStatus()">Update</button>
+
+    <h2>Model Selection Panel</h2>
+    <h3>Selector Pool</h3>
+    <ul>
+        {% for selector, details in selectors.items() %}
+        <li>
+            {{ selector }} - 
+            {% if details['enabled'] %}
+                ✅ Enabled
+            {% else %}
+                ❌ Disabled
+            {% endif %}
+            <form action="{{ url_for('toggle_selector') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="selector" value="{{ selector }}">
+                <button type="submit">
+                    {% if details['enabled'] %}
+                        Disable
+                    {% else %}
+                        Enable
+                    {% endif %}
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <!-- <p>prompt (if LLM selected)</p> -->
+    <h3>Model Pool</h3>
+    <ul>
+        {% for algorithm, details in algorithms.items() %}
+        <li>
+            {{ algorithm }} - 
+            {% if details['enabled'] %}
+                ✅ Enabled
+            {% else %}
+                ❌ Disabled
+            {% endif %}
+            <form action="{{ url_for('toggle_algorithm') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="algorithm" value="{{ algorithm }}">
+                <button type="submit">
+                    {% if details['enabled'] %}
+                        Disable
+                    {% else %}
+                        Enable
+                    {% endif %}
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        function controlAction(action) {
+            fetch('/api/' + action, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').innerText = 'Status: ' + data.status;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function getStatus() {
+            fetch('/api/status')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').innerText = 'Status: ' + data.status;
+                document.getElementById('uptime').innerText = '' + data.uptime + 's';
+                document.getElementById('requests').innerText = '' + data.requests;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+    <h2>Evaluators</h2>
+    <ul>
+        <li><p>reportgen_ev5.py (Default) - ⚠️ Error</p></li>
+    </ul>
+</body>
+</html>

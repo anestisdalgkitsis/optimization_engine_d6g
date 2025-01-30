@@ -1,113 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optimization Engine - Dashboard</title>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Optimization Engine - Dashboard</title>
+  
+  <!-- Favicon -->
+  <link
+    rel="icon"
+    href="{{ url_for('static', filename='favicon.ico') }}"
+    type="image/x-icon"
+  />
+  
+  <!-- Bootstrap CSS (CDN) -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  />
+  
+  <!-- Your Custom Dashboard Styles -->
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/dashboard.css') }}"
+  />
 </head>
 <body>
-    <h1>Optimization Engine</h1>
-    <p>Desire6G Module WP3 | Dr. Anestis Dalgkitsis, Cyril Hsu</p>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        Optimization Engine
+      </a>
+    </div>
+  </nav>
 
-    <h2>Control Panel</h2>
+  <!-- Main Container -->
+  <div class="container my-4">
+    <!-- Header Row -->
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="display-6">Dashboard</h1>
+        <p class="text-muted mb-0">
+          Desire6G Module WP3 | Dr. Anestis Dalgkitsis, Cyril Hsu
+        </p>
+      </div>
+    </div>
 
-    <button onclick="controlAction('start')">Enable</button>
-    <button onclick="controlAction('stop')">Disable</button>
-    <p id="status">Status: standby</p>
+    <!-- Control Panel and Module Stats Row -->
+    <div class="row gy-4">
+      <!-- Control Panel -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h2 class="h5 card-title">Control Panel</h2>
+            <p class="card-text">
+              <span id="status" class="status-indicator">Status: standby</span>
+            </p>
+            <div class="d-flex gap-2 mb-3">
+              <button class="btn btn-success" onclick="controlAction('start')">
+                Enable
+              </button>
+              <button class="btn btn-danger" onclick="controlAction('stop')">
+                Disable
+              </button>
+            </div>
+            <button class="btn btn-primary" onclick="getStatus()">Update</button>
+          </div>
+        </div>
+      </div>
+      <!-- Module Statistics -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h2 class="h5 card-title">Module Statistics</h2>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Module Uptime:</span>
+                <span id="uptime">0</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Request Count:</span>
+                <span id="requests">0</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <h2>Module Statistics</h2>
-
-    <p>Module Uptime: <span id="uptime">0</span></p>
-    <!-- <p>Last Checked</p> -->
-    <p>Request Count: <span id="requests">0</span></p>
-    <!-- <p>Requests Plot</p> -->
-    <!-- <p>Another Plot</p> -->
-    <!-- <p>Log of requests</p> -->
-    
-    <button onclick="getStatus()">Update</button>
-
-    <h2>Model Selection Panel</h2>
-    <h3>Selector Pool</h3>
-    <!-- <ul>
-        <li><p>spinwheel.py (Default) - ✅ Enabled</p></li>
-        <li><p>gptpick.py - ⚠️ Error</p></li>
-    </ul> -->
-    <ul>
-        {% for selector, details in selector.items() %}
-        <li>
-            {{ selector }} - 
-            {% if details['enabled'] %}
-                ✅ Enabled
-            {% else %}
-                ❌ Disabled
-            {% endif %}
-            <form action="{{ url_for('toggle_selector') }}" method="POST" style="display:inline;">
-                <input type="hidden" name="selector" value="{{ selector }}">
-                <button type="submit">
+    <!-- Model Selection Panels -->
+    <div class="row gy-4 mt-4">
+      <!-- Selector Pool -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h2 class="h5 card-title">Selector Pool</h2>
+            <ul class="list-group list-group-flush">
+              {% for selector, details in selectors.items() %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{{ selector }}</strong>
+                  {% if details['enabled'] %}
+                    <span class="text-success ms-2">✅ Enabled</span>
+                  {% else %}
+                    <span class="text-danger ms-2">❌ Disabled</span>
+                  {% endif %}
+                </div>
+                <form
+                  action="{{ url_for('toggle_selector') }}"
+                  method="POST"
+                  class="m-0"
+                >
+                  <input type="hidden" name="selector" value="{{ selector }}" />
+                  <button
+                    type="submit"
+                    class="btn btn-sm {% if details['enabled'] %}btn-warning{% else %}btn-success{% endif %}"
+                  >
                     {% if details['enabled'] %}
-                        Disable
+                      Disable
                     {% else %}
-                        Enable
+                      Enable
                     {% endif %}
-                </button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
-    <!-- <p>prompt (if LLM selected)</p> -->
-    <h3>Model Pool</h3>
-    <ul>
-        {% for algorithm, details in algorithms.items() %}
-        <li>
-            {{ algorithm }} - 
-            {% if details['enabled'] %}
-                ✅ Enabled
-            {% else %}
-                ❌ Disabled
-            {% endif %}
-            <form action="{{ url_for('toggle_algorithm') }}" method="POST" style="display:inline;">
-                <input type="hidden" name="algorithm" value="{{ algorithm }}">
-                <button type="submit">
+                  </button>
+                </form>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Model Pool -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h2 class="h5 card-title">Model Pool</h2>
+            <ul class="list-group list-group-flush">
+              {% for algorithm, details in algorithms.items() %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{{ algorithm }}</strong>
+                  {% if details['enabled'] %}
+                    <span class="text-success ms-2">✅ Enabled</span>
+                  {% else %}
+                    <span class="text-danger ms-2">❌ Disabled</span>
+                  {% endif %}
+                </div>
+                <form
+                  action="{{ url_for('toggle_algorithm') }}"
+                  method="POST"
+                  class="m-0"
+                >
+                  <input type="hidden" name="algorithm" value="{{ algorithm }}" />
+                  <button
+                    type="submit"
+                    class="btn btn-sm {% if details['enabled'] %}btn-warning{% else %}btn-success{% endif %}"
+                  >
                     {% if details['enabled'] %}
-                        Disable
+                      Disable
                     {% else %}
-                        Enable
+                      Enable
                     {% endif %}
-                </button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
+                  </button>
+                </form>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        function controlAction(action) {
-            fetch('/api/' + action, {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('status').innerText = 'Status: ' + data.status;
-            })
-            .catch(error => console.error('Error:', error));
-        }
+    <!-- Evaluators -->
+    <div class="row gy-4 mt-4">
+      <div class="col">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h2 class="h5 card-title">Evaluators</h2>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>reportgen_ev5.py (Default)</span>
+                <span class="text-warning">⚠️ Error</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function getStatus() {
-            fetch('/api/status')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('status').innerText = 'Status: ' + data.status;
-                document.getElementById('uptime').innerText = '' + data.uptime + 's';
-                document.getElementById('requests').innerText = '' + data.requests;
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    </script>
+  <!-- JavaScript -->
+  <script>
+    function controlAction(action) {
+      fetch("/api/" + action, {
+        method: "POST"
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("status").innerText = "Status: " + data.status;
+        })
+        .catch((error) => console.error("Error:", error));
+    }
 
-    <h2>Evaluators</h2>
-    <ul>
-        <li><p>reportgen_ev5.py (Default) - ⚠️ Error</p></li>
-    </ul>
+    function getStatus() {
+      fetch("/api/status")
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("status").innerText = "Status: " + data.status;
+          document.getElementById("uptime").innerText = data.uptime + "s";
+          document.getElementById("requests").innerText = data.requests;
+        })
+        .catch((error) => console.error("Error:", error));
+    }
+  </script>
+  
+  <!-- Bootstrap JS Bundle (Optional) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  ></script>
 </body>
 </html>
