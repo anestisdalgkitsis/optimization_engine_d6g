@@ -30,9 +30,31 @@
 
     <h2>Model Selection Panel</h2>
     <h3>Selector Pool</h3>
-    <ul>
+    <!-- <ul>
         <li><p>spinwheel.py (Default) - ✅ Enabled</p></li>
         <li><p>gptpick.py - ⚠️ Error</p></li>
+    </ul> -->
+    <ul>
+        {% for selector, details in selector.items() %}
+        <li>
+            {{ selector }} - 
+            {% if details['enabled'] %}
+                ✅ Enabled
+            {% else %}
+                ❌ Disabled
+            {% endif %}
+            <form action="{{ url_for('toggle_selector') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="selector" value="{{ selector }}">
+                <button type="submit">
+                    {% if details['enabled'] %}
+                        Disable
+                    {% else %}
+                        Enable
+                    {% endif %}
+                </button>
+            </form>
+        </li>
+        {% endfor %}
     </ul>
     <!-- <p>prompt (if LLM selected)</p> -->
     <h3>Model Pool</h3>

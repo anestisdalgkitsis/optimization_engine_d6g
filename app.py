@@ -27,14 +27,14 @@ import selectors.intelligence as intelligence
 status = "standby"
 start_time = time.time()
 request_count = 0
+selectors = { # this should be changed to modular
+    "spinwheel.py (Default)": {"enabled": True},
+    "intelligence.py": {"enabled": False},
+}
 algorithms = { # this should be changed to modular
     "partition.py (Default)": {"enabled": True},
     "autologic.py": {"enabled": False},
     "greedysplit.py": {"enabled": False},
-}
-selectors = { # this should be changed to modular
-    "spinwheel.py (Default)": {"enabled": True},
-    "intelligence.py": {"enabled": False},
 }
 
 # Module Info
@@ -87,6 +87,13 @@ def status():
     uptime = int(time.time() - start_time)
 
     return jsonify({"status": status, "uptime": str(uptime), "requests": str(request_count)})
+
+@app.route('/toggle_selector', methods=['POST'])
+def toggle_selector():
+    selector_name = request.form['selector']
+    if selector_name in selectors:
+        algorithms[selector_name]['enabled'] = not selectors[selector_name]['enabled']
+    return redirect('/')
 
 @app.route('/toggle_algorithm', methods=['POST'])
 def toggle_algorithm():
