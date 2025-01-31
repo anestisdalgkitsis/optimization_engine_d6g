@@ -64,10 +64,10 @@
                 Disable
               </button>
             </div>
-            <button class="btn btn-primary" onclick="getStatus()">Update</button>
           </div>
         </div>
       </div>
+
       <!-- Module Statistics -->
       <div class="col-md-6">
         <div class="card shadow-sm">
@@ -82,7 +82,14 @@
                 <span>Request Count:</span>
                 <span id="requests">0</span>
               </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Request per Second:</span>
+                <span id="reqpersec">0</span>
+              </li>
             </ul>
+            <!-- Integrated Update Button -->
+            <hr class="my-4" />
+            <button class="btn btn-primary" onclick="getStatus()">Fetch Report</button>
           </div>
         </div>
       </div>
@@ -90,14 +97,18 @@
 
     <!-- Model Selection Panels -->
     <div class="row gy-4 mt-4">
-      <!-- Selector Pool -->
+      <!-- Selector Pool (With Integrated Prompt) -->
       <div class="col-md-6">
         <div class="card shadow-sm">
           <div class="card-body">
             <h2 class="h5 card-title">Selector Pool</h2>
+            Top-Down prioirty
+            <!-- Existing list of selectors -->
             <ul class="list-group list-group-flush">
               {% for selector, details in selectors.items() %}
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
                 <div>
                   <strong>{{ selector }}</strong>
                   {% if details['enabled'] %}
@@ -126,6 +137,30 @@
               </li>
               {% endfor %}
             </ul>
+            <!-- A divider or spacing before the prompt -->
+            <hr class="my-4" />
+            <!-- Integrated Prompt Form -->
+            <h3 class="h5">Selector Prompt</h3>
+            <form id="promptForm" action="#" method="POST">
+              <div class="mb-3">
+                <label for="selectorPrompt" class="form-label">LLM Selector Prompt:</label>
+                <textarea
+                  id="selectorPrompt"
+                  name="selectorPrompt"
+                  rows="4"
+                  class="form-control"
+                  placeholder="Enter your prompt here..."
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-success me-2">Submit</button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="clearPrompt()"
+              >
+                Clear
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -179,7 +214,7 @@
             <h2 class="h5 card-title">Evaluators</h2>
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>reportgen_ev5.py (Default)</span>
+                <span><strong>reportgen_ev5.py (Default)</strong></span>
                 <span class="text-warning">⚠️ Error</span>
               </li>
             </ul>
@@ -191,6 +226,7 @@
 
   <!-- JavaScript -->
   <script>
+    // Control actions
     function controlAction(action) {
       fetch("/api/" + action, {
         method: "POST"
@@ -202,6 +238,7 @@
         .catch((error) => console.error("Error:", error));
     }
 
+    // Fetch current status
     function getStatus() {
       fetch("/api/status")
         .then((response) => response.json())
@@ -209,8 +246,14 @@
           document.getElementById("status").innerText = "Status: " + data.status;
           document.getElementById("uptime").innerText = data.uptime + "s";
           document.getElementById("requests").innerText = data.requests;
+          document.getElementById("reqpersec").innerText = data.reqpersec;
         })
         .catch((error) => console.error("Error:", error));
+    }
+
+    // Clear the textarea in "Selector Prompt"
+    function clearPrompt() {
+      document.getElementById("selectorPrompt").value = "";
     }
   </script>
   

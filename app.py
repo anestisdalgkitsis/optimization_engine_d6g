@@ -9,6 +9,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_socketio import SocketIO, emit
 import matplotlib.pyplot as plt
 import networkx as nx
+import threading
 import argparse
 import socket
 import json
@@ -27,6 +28,7 @@ import pickers.intelligence as intelligence
 status = "standby"
 start_time = time.time()
 request_count = 0
+reqpersec = 0
 selectors = { # this should be changed to modular
     "spinwheel.py (Default)": {"enabled": True},
     "intelligence.py": {"enabled": False},
@@ -54,6 +56,19 @@ parser = argparse.ArgumentParser(description="A script that processes command-li
 parser.add_argument('--verbose', action='store_true', help='Enable verbose output')
 args = parser.parse_args()
 
+# RPS Counter Thread
+lock = threading.Lock()
+def reset_counter():
+    global reqpersec
+    while True:
+        time.sleep(1)
+        with lock:
+            if args.verbose:
+                print(f" - reqpersec: {reqpersec}")
+            reqpersec = 0
+
+# Start background thread to reset the counter
+threading.Thread(target=reset_counter, daemon=True).start()
 
 # ROUTES
 
@@ -83,10 +98,11 @@ def status():
     global start_time
     global status
     global request_count
+    global reqpersec
 
     uptime = int(time.time() - start_time)
 
-    return jsonify({"status": status, "uptime": str(uptime), "requests": str(request_count)})
+    return jsonify({"status": status, "uptime": str(uptime), "requests": str(request_count), "reqpersec": str(reqpersec)})
 
 @app.route('/toggle_selector', methods=['POST'])
 def toggle_selector():
@@ -107,6 +123,7 @@ def toggle_algorithm():
 @app.route('/service_request', methods=['POST'])
 def incoming_request():
     global request_count
+    global reqpersec
     global status
 
     # Measure processing time
@@ -176,7 +193,11 @@ def incoming_request():
 
     # Measure processing time
     processing_time = time.time() - proc_time
-    print("Request Processing Time: " + str(processing_time))
+    print("Request Processing Time: " + str(processing_time * 1000) + " ms")
+
+    # Measure requests per second
+    with lock:
+        reqpersec += 1
 
     return jsonify(combined_response)
 
