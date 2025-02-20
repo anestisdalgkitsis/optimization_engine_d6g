@@ -7,7 +7,7 @@ Network Optimization Engine module 3-domain partition demonstration.
 ## Installation
 Just `git clone` this repository.
 
-## Demo Instructions
+## Demo Instructions (Terminal)
 Don't forget to activate `.venv`!
 
 1. Generate a random service request:  
@@ -19,6 +19,11 @@ Don't forget to activate `.venv`!
 3. In a new terminal window, send the service request to NOE:  
 `cd inbox`  
 `curl -X POST -F "request=@sid85034.json" http://127.0.0.1:5863/service_request`
+
+## Graphical UI
+
+Visit the following address in your browser of choice:
+`127.0.0.1:5863`
 
 ## Deploy Container
 Simply run the following commands on root.
